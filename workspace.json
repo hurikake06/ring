@@ -1,6 +1,84 @@
 {
   "version": 2,
   "projects": {
+    "cms": {
+      "root": "apps/cms",
+      "sourceRoot": "apps/cms",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/next:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "root": "apps/cms",
+            "outputPath": "dist/apps/cms"
+          },
+          "configurations": {
+            "production": {}
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/next:server",
+          "options": {
+            "buildTarget": "cms:build",
+            "dev": true
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "cms:build:production",
+              "dev": false
+            }
+          }
+        },
+        "export": {
+          "executor": "@nrwl/next:export",
+          "options": {
+            "buildTarget": "cms:build:production"
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/cms"],
+          "options": {
+            "jestConfig": "apps/cms/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/cms/**/*.{ts,tsx,js,jsx}"]
+          }
+        }
+      }
+    },
+    "cms-e2e": {
+      "root": "apps/cms-e2e",
+      "sourceRoot": "apps/cms-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/cms-e2e/cypress.json",
+            "devServerTarget": "cms:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "cms:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/cms-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
     "crm": {
       "root": "apps/crm",
       "sourceRoot": "apps/crm",
